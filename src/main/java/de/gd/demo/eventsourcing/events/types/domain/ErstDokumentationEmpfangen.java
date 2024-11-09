@@ -2,6 +2,8 @@ package de.gd.demo.eventsourcing.events.types.domain;
 
 import java.time.LocalDate;
 
+import de.gd.demo.eventsourcing.events.types.EventHandle;
+
 public class ErstDokumentationEmpfangen extends DomainEvent {
 
     private final LocalDate unterschriftsDatum;
@@ -18,5 +20,10 @@ public class ErstDokumentationEmpfangen extends DomainEvent {
 
     public LocalDate getUnterschriftsDatum() {
         return unterschriftsDatum;
+    }
+
+    @Override
+    public EventHandle getEventHandle() {
+        return EventHandle.ErstDokumentationEmpfangen;
     }
 }

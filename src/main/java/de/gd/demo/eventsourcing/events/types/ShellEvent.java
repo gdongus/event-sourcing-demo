@@ -1,10 +1,10 @@
 package de.gd.demo.eventsourcing.events.types;
 
 public record ShellEvent(
-        String aggregateId,
-        int aggregateVersion,
-        AggregateHandle aggregateHandle,
-        String eventVersion,
-        EventHandle eventHandle,
-        String domainEventJson) {
+                String aggregateId,
+                Long aggregateVersion,
+                AggregateHandle aggregateHandle,
+                int eventVersion,
+                EventHandle eventHandle,
+                String domainEventJson) {
 }

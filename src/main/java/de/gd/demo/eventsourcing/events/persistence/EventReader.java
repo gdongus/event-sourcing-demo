@@ -29,12 +29,12 @@ public class EventReader {
 
     public List<DomainEvent> readEvents(String aggregateId) {
         return repository.findByAggregateId(aggregateId).stream()
-                .map(shellevent -> mapToDomainEvent(shellevent))
+                .map(shellevent -> extractDomainEventFromShell(shellevent))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
-    private DomainEvent mapToDomainEvent(ShellEvent shellevent) {
+    private DomainEvent extractDomainEventFromShell(ShellEvent shellevent) {
         switch (shellevent.eventHandle()) {
             case FolgeDokumentationEmpfangen:
                 try {

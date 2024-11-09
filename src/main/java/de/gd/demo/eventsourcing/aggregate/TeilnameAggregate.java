@@ -1,5 +1,7 @@
 package de.gd.demo.eventsourcing.aggregate;
 
+import java.util.List;
+
 import de.gd.demo.eventsourcing.events.types.domain.DomainEvent;
 import de.gd.demo.eventsourcing.events.types.domain.ErstDokumentationEmpfangen;
 import de.gd.demo.eventsourcing.events.types.domain.FolgedokumentationEmpfangenEvent;
@@ -18,6 +20,12 @@ public class TeilnameAggregate {
 
     public Folgedokumentation getFolgedokumentation() {
         return folgedokumentation;
+    }
+
+    public void apply(List<DomainEvent> events) {
+        for (DomainEvent event : events) {
+            apply(event);
+        }
     }
 
     public void apply(DomainEvent domainEvent) {

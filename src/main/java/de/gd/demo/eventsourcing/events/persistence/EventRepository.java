@@ -11,14 +11,18 @@ public abstract interface EventRepository {
 
     static Map<String, List<ShellEvent>> storage = new HashMap<String, List<ShellEvent>>();
 
-    default void save(ShellEvent event) {
-        List<ShellEvent> list = storage.get(event.aggregateId());
+    default void save(List<ShellEvent> events) {
+        if (events == null || events.size() == 0)
+            return;
+
+        String aggregateId = events.get(0).aggregateId();
+        List<ShellEvent> list = storage.get(aggregateId);
 
         if (null == list)
             list = new ArrayList<>();
 
-        list.add(event);
-        storage.put(event.aggregateId(), list);
+        list.addAll(events);
+        storage.put(aggregateId, list);
     }
 
     default List<ShellEvent> findByAggregateId(String aggregateId) {
