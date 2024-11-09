@@ -22,9 +22,9 @@ public class TeilnameAggregate {
         return folgedokumentation;
     }
 
-    public void apply(List<DomainEvent> events) {
-        for (DomainEvent event : events) {
-            apply(event);
+    public void apply(List<DomainEvent> domainEvents) {
+        for (DomainEvent domainEvent : domainEvents) {
+            apply(domainEvent);
         }
     }
 
