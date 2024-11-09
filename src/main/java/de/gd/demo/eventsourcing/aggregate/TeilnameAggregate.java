@@ -42,10 +42,11 @@ public class TeilnameAggregate {
         }
     }
 
-    public boolean istAktive() {
-        return erstdokumentation != null && folgedokumentation != null;
-    }
-
+    /**
+     * Used to avoid race conditions. The version is incremented with each event!
+     * 
+     * @return Long
+     */
     public Long getVersion() {
         return this.version;
     }
