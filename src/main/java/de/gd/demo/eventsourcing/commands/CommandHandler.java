@@ -67,7 +67,7 @@ public class CommandHandler {
     private TeilnameAggregate rebuildAggregate(String aggregateId) {
         TeilnameAggregate aggregate = new TeilnameAggregate();
 
-        eventReader.readEvents(aggregateId)
+        eventReader.getEvents(aggregateId)
                 .stream()
                 .forEach(event -> aggregate.apply(event));
 

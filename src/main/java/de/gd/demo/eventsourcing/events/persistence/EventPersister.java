@@ -25,6 +25,7 @@ public class EventPersister {
 
     public EventPersister(EventRepository eventRepository, ObjectMapper objectMapper) {
         this.eventRepository = eventRepository;
+        this.objectMapper = objectMapper;
     }
 
     public void persistEvents(List<DomainEvent> events) {
@@ -32,13 +33,15 @@ public class EventPersister {
                 events.stream()
                         .map(domainEvent -> {
                             try {
-                                return new ShellEvent(
+                                ShellEvent shellEvent = new ShellEvent(
                                         domainEvent.getAggregateId(),
                                         domainEvent.getAggregateVersion(),
                                         AggregateHandle.Dokumentation,
                                         0,
                                         domainEvent.getEventHandle(),
                                         objectMapper.writeValueAsString(domainEvent));
+
+                                return shellEvent;
                             } catch (JsonProcessingException e) {
                                 LOG.error("Error (JsonProcessingException) while persisting event");
                                 throw new RuntimeException(e);

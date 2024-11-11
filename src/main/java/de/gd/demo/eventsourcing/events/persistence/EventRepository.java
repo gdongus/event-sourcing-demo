@@ -1,6 +1,7 @@
 package de.gd.demo.eventsourcing.events.persistence;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,17 +20,20 @@ public class EventRepository {
             return;
 
         String aggregateId = events.get(0).aggregateId();
-        List<ShellEvent> list = storage.get(aggregateId);
-
-        if (null == list)
-            list = new ArrayList<>();
+        List<ShellEvent> list = storage.getOrDefault(aggregateId, new ArrayList<>());
 
         list.addAll(events);
         storage.put(aggregateId, list);
     }
 
     public List<ShellEvent> findByAggregateId(String aggregateId) {
-        return storage.get(aggregateId);
+        return storage.getOrDefault(aggregateId, Collections.emptyList());
     }
 
+    public List<ShellEvent> findAll() {
+        List<ShellEvent> allEvents = new ArrayList<>();
+        storage.values().forEach(allEvents::addAll);
+
+        return allEvents;
+    }
 }

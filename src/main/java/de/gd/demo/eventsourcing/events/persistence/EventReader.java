@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.gd.demo.eventsourcing.events.types.EventHandle;
 import de.gd.demo.eventsourcing.events.types.ShellEvent;
 import de.gd.demo.eventsourcing.events.types.domain.DomainEvent;
+import de.gd.demo.eventsourcing.events.types.domain.ErstDokumentationEmpfangen;
 import de.gd.demo.eventsourcing.events.types.domain.FolgedokumentationEmpfangenEvent;
 
 @Service
@@ -29,7 +31,14 @@ public class EventReader {
         this.objectMapper = objectMapper;
     }
 
-    public List<DomainEvent> readEvents(String aggregateId) {
+    public List<DomainEvent> getEvents() {
+        return repository.findAll().stream()
+                .map(shellevent -> extractDomainEventFromShell(shellevent))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    public List<DomainEvent> getEvents(String aggregateId) {
         return repository.findByAggregateId(aggregateId).stream()
                 .map(shellevent -> extractDomainEventFromShell(shellevent))
                 .filter(Objects::nonNull)
@@ -38,15 +47,25 @@ public class EventReader {
 
     private DomainEvent extractDomainEventFromShell(ShellEvent shellevent) {
         switch (shellevent.eventHandle()) {
-            case FolgeDokumentationEmpfangen:
+            case EventHandle.FolgeDokumentationEmpfangen -> {
                 try {
                     return objectMapper.readValue(shellevent.domainEventJson(), FolgedokumentationEmpfangenEvent.class);
                 } catch (JsonProcessingException e) {
                     LOG.error("Failed to parse event" + shellevent.toString(), e);
                     return null;
                 }
-            default:
-                throw new IllegalArgumentException("Unknown event type: " + shellevent.toString());
+            }
+            case EventHandle.ErstDokumentationEmpfangen -> {
+                try {
+                    return objectMapper.readValue(shellevent.domainEventJson(),
+                            ErstDokumentationEmpfangen.class);
+                } catch (JsonProcessingException e) {
+                    LOG.error("Failed to parse event" + shellevent.toString(), e);
+                    return null;
+                }
+            }
+
+            default -> throw new IllegalArgumentException("Unknown event type: " + shellevent.toString());
         }
     }
 }
