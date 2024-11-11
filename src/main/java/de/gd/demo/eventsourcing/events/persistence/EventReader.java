@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,7 @@ import de.gd.demo.eventsourcing.events.types.ShellEvent;
 import de.gd.demo.eventsourcing.events.types.domain.DomainEvent;
 import de.gd.demo.eventsourcing.events.types.domain.FolgedokumentationEmpfangenEvent;
 
+@Service
 public class EventReader {
 
     private static Logger LOG = LoggerFactory.getLogger(EventReader.class);

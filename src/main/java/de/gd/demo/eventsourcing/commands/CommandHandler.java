@@ -1,19 +1,19 @@
 
-package de.gd.demo.eventsourcing;
+package de.gd.demo.eventsourcing.commands;
 
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import de.gd.demo.eventsourcing.aggregate.TeilnameAggregate;
-import de.gd.demo.eventsourcing.commands.BaseCommand;
-import de.gd.demo.eventsourcing.commands.EmpfangeErstdokumentation;
-import de.gd.demo.eventsourcing.commands.EmpfangeFolgedokumentationimplements;
 import de.gd.demo.eventsourcing.events.persistence.EventPersister;
 import de.gd.demo.eventsourcing.events.persistence.EventReader;
 import de.gd.demo.eventsourcing.events.types.domain.DomainEvent;
 import de.gd.demo.eventsourcing.events.types.domain.ErstDokumentationEmpfangen;
 import de.gd.demo.eventsourcing.events.types.domain.FolgedokumentationEmpfangenEvent;
 
+@Service
 public class CommandHandler {
 
     private EventReader eventReader;

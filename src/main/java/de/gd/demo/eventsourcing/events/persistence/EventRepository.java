@@ -5,13 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import de.gd.demo.eventsourcing.events.types.ShellEvent;
 
-public abstract interface EventRepository {
+@Service
+public class EventRepository {
 
     static Map<String, List<ShellEvent>> storage = new HashMap<String, List<ShellEvent>>();
 
-    default void save(List<ShellEvent> events) {
+    public void save(List<ShellEvent> events) {
         if (events == null || events.size() == 0)
             return;
 
@@ -25,7 +28,7 @@ public abstract interface EventRepository {
         storage.put(aggregateId, list);
     }
 
-    default List<ShellEvent> findByAggregateId(String aggregateId) {
+    public List<ShellEvent> findByAggregateId(String aggregateId) {
         return storage.get(aggregateId);
     }
 
